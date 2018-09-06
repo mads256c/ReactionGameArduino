@@ -14,14 +14,14 @@
 
 
 constexpr uint8_t None = B00000000;
-constexpr uint8_t Zero = B11111100;
-constexpr uint8_t One = B01100000;
-constexpr uint8_t Two = B11011010;
-constexpr uint8_t Three = B11110010;
-constexpr uint8_t Four = B01100110;
-constexpr uint8_t Five = B10110110;
-constexpr uint8_t Six = B10111110;
-constexpr uint8_t Seven = B11100000;
+constexpr uint8_t Zero = B01111110;
+constexpr uint8_t One = B00010010;
+constexpr uint8_t Two = B10111100;
+constexpr uint8_t Three = B10110110;
+constexpr uint8_t Four = B11010010;
+constexpr uint8_t Five = B11100110;
+constexpr uint8_t Six = B11101110;
+constexpr uint8_t Seven = B00110010;
 constexpr uint8_t Eight = B11111111;
 constexpr uint8_t Nine = B11110110;
 constexpr uint8_t A = B11101110;
@@ -145,19 +145,41 @@ void setup()
 }
 
 void loop() {
+
+	while (true)
+	{
+		for (uint8_t i = 0; i < 10; i++)
+		{
+			for (uint8_t j = 22; j < 43; j++)
+			{
+				digitalWrite(j, HIGH);
+			}
+
+			drawBitmask(digitToBitmask(i), 22);
+
+			delay(1000);
+		}
+		
+	}
+
+
 	delay(random(TIME_MIN, TIME_MAX));
 	
+	//Find a random button and the corrosponding led.
 	const uint8_t randomButton = random(BUTTON_MIN, BUTTON_MAX + 1);
 	const uint8_t randomLED = randomButton + (LED_MIN - BUTTON_MIN);
 
-	digitalWrite(randomLED, HIGH);
+	digitalWrite(randomLED, HIGH); //Turn on the led.
 
 	const unsigned long before = millis(); //Get the time before any button press.
 
 	//While loop, but exitLoop is in the scope.
 	for (bool exitLoop = false; !exitLoop;) {
+
+		//For each button.
 		for (uint8_t i = BUTTON_MIN; i < BUTTON_MAX + 1; i++)
 		{
+			//If the button i is pressed.
 			if (digitalRead(i) == HIGH)
 			{
 				//If i is the button chosen.
@@ -175,7 +197,7 @@ void loop() {
 				}
 				else
 				{
-					drawFail(); // Draw fail
+					drawFail(); //Draw fail
 				}
 
 
@@ -187,7 +209,7 @@ void loop() {
 
 	}
 
-	digitalWrite(randomLED, LOW);
+	digitalWrite(randomLED, LOW); //Turn off the led.
 
 }
 
