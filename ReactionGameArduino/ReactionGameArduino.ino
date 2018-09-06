@@ -101,9 +101,10 @@ uint8_t digitToBitmask(const uint8_t number)
 //Draws a bitmask
 void drawBitmask(const uint8_t bitmask, const uint8_t startPin)
 {
+	//Go through all the bits and check if they are set in bitmask
 	for (uint8_t i = 0; i < 7; i++)
 	{
-		const uint8_t bitshift = B10000000 >> i;
+		const uint8_t bitshift = B10000000 >> i; 
 
 		if ((bitshift & bitmask) == bitshift)
 		{
@@ -145,12 +146,13 @@ void setup()
 
 void loop() {
 	delay(random(TIME_MIN, TIME_MAX));
-
+	
 	const uint8_t randomButton = random(BUTTON_MIN, BUTTON_MAX + 1);
 	const uint8_t randomLED = randomButton + (LED_MIN - BUTTON_MIN);
 
 	digitalWrite(randomLED, HIGH);
-	const unsigned long before = millis();
+
+	const unsigned long before = millis(); //Get the time before any button press.
 
 	//While loop, but exitLoop is in the scope.
 	for (bool exitLoop = false; !exitLoop;) {
@@ -158,20 +160,22 @@ void loop() {
 		{
 			if (digitalRead(i) == HIGH)
 			{
+				//If i is the button chosen.
 				if (i == randomButton)
 				{
-					const unsigned long after = millis();
+					const unsigned long after = millis(); //Get the time
 
-					unsigned long timeTaken = after - before;
+					unsigned long timeTaken = after - before; //Calculate the difference.
 
+					//If timetaken is over 9999 just print 9999.
 					if (timeTaken > 9999)
 						timeTaken = 9999;
 
-					drawNumber(timeTaken);
+					drawNumber(timeTaken); //Draw the time taken.
 				}
 				else
 				{
-					drawFail();
+					drawFail(); // Draw fail
 				}
 
 
