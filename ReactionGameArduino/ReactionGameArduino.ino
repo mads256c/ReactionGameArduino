@@ -108,7 +108,10 @@ void drawBitmask(const uint8_t bitmask, const uint8_t startPin)
 
 		if ((bitshift & bitmask) == bitshift)
 		{
-			digitalWrite(i + startPin, LOW);
+			if (i + startPin > 49)
+				digitalWrite((i + startPin) - 50 + 2, LOW);
+			else
+				digitalWrite(i + startPin, LOW);
 		}
 	}
 }
@@ -116,26 +119,26 @@ void drawBitmask(const uint8_t bitmask, const uint8_t startPin)
 void setup()
 {
 	//Set up pinmode for the buttons.
-	for (size_t i = BUTTON_MIN; i < BUTTON_MAX + 1; i++)
+	for (uint8_t i = BUTTON_MIN; i < BUTTON_MAX + 1; i++)
 	{
 		pinMode(i, INPUT);
 	}
 
 	//Setup pinmode for leds
-	for (size_t i = LED_MIN; i < LED_MAX + 1; i++)
+	for (uint8_t i = LED_MIN; i < LED_MAX + 1; i++)
 	{
 		pinMode(i, OUTPUT);
 	}
 
 	//Setup pinmodes for the 7-seg displays.
-	for (size_t i = 2; i < 9; i++)
+	for (uint8_t i = 2; i < 5; i++)
 	{
 		pinMode(i, OUTPUT);
 
 		digitalWrite(i, HIGH);
 	}
 
-	for (size_t i = 22; i < 43; i++)
+	for (uint8_t i = 22; i < 50; i++)
 	{
 		pinMode(i, OUTPUT);
 
@@ -150,12 +153,20 @@ void loop() {
 	{
 		for (uint8_t i = 0; i < 10; i++)
 		{
-			for (uint8_t j = 22; j < 43; j++)
+			for (uint8_t j = 22; j < 50; j++)
+			{
+				digitalWrite(j, HIGH);
+			}
+
+			for (uint8_t j = 2; j < 5; j++)
 			{
 				digitalWrite(j, HIGH);
 			}
 
 			drawBitmask(digitToBitmask(i), 22);
+			drawBitmask(digitToBitmask(i), 30);
+			drawBitmask(digitToBitmask(i), 38);
+			drawBitmask(digitToBitmask(i), 44);
 
 			delay(1000);
 		}
