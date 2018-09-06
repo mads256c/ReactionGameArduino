@@ -24,6 +24,34 @@ constexpr uint8_t Six = B10111110;
 constexpr uint8_t Seven = B11100000;
 constexpr uint8_t Eight = B11111111;
 constexpr uint8_t Nine = B11110110;
+constexpr uint8_t A = B11101110;
+constexpr uint8_t B = B00111110;
+constexpr uint8_t C = B10011100;
+constexpr uint8_t D = B01111010;
+constexpr uint8_t E = B10011110;
+constexpr uint8_t F = B10001110;
+constexpr uint8_t I = B00001100;
+constexpr uint8_t L = B00011100;
+
+
+void drawFail()
+{
+	//Reset displays
+	for (size_t i = 2; i < 9; i++)
+	{
+		digitalWrite(i, HIGH);
+	}
+
+	for (size_t i = 22; i < 43; i++)
+	{
+		digitalWrite(i, HIGH);
+	}
+
+	drawBitmask(F, 2); //First 7-seg is starting on pin 2.
+	drawBitmask(A, 22); //Etc.
+	drawBitmask(I, 29);
+	drawBitmask(L, 36);
+}
 
 //Draws a number (0-9999).
 void drawNumber(const uint16_t number)
@@ -143,7 +171,7 @@ void loop() {
 				}
 				else
 				{
-					drawNumber(9999);
+					drawFail();
 				}
 
 
