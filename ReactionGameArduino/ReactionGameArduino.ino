@@ -24,14 +24,14 @@ constexpr uint8_t Six = B11101110;
 constexpr uint8_t Seven = B00110010;
 constexpr uint8_t Eight = B11111111;
 constexpr uint8_t Nine = B11110110;
-constexpr uint8_t A = B11101110;
+constexpr uint8_t A = B11111010;
 constexpr uint8_t B = B00111110;
 constexpr uint8_t C = B10011100;
 constexpr uint8_t D = B01111010;
 constexpr uint8_t E = B10011110;
-constexpr uint8_t F = B10001110;
-constexpr uint8_t I = B00001100;
-constexpr uint8_t L = B00011100;
+constexpr uint8_t F = B11101000;
+constexpr uint8_t I = B01001000;
+constexpr uint8_t L = B01001100;
 
 
 void drawFail()
@@ -42,15 +42,15 @@ void drawFail()
 		digitalWrite(i, HIGH);
 	}
 
-	for (size_t i = 22; i < 43; i++)
+	for (size_t i = 22; i < BUTTON_MIN; i++)
 	{
 		digitalWrite(i, HIGH);
 	}
 
-	drawBitmask(F, 2); //First 7-seg is starting on pin 2.
-	drawBitmask(A, 22); //Etc.
-	drawBitmask(I, 29);
-	drawBitmask(L, 36);
+	drawBitmask(F, 22); //First 7-seg is starting on pin 2.
+	drawBitmask(A, 30); //Etc.
+	drawBitmask(I, 38);
+	drawBitmask(L, 45);
 }
 
 //Draws a number (0-9999).
@@ -62,7 +62,7 @@ void drawNumber(const uint16_t number)
 		digitalWrite(i, HIGH);
 	}
 
-	for (size_t i = 22; i < 43; i++)
+	for (size_t i = 22; i < BUTTON_MIN; i++)
 	{
 		digitalWrite(i, HIGH);
 	}
@@ -73,10 +73,10 @@ void drawNumber(const uint16_t number)
 	const auto thirdDigit = number / 10 % 10;
 	const auto fourthDigit = number % 10;
 
-	drawBitmask(digitToBitmask(firstDigit), 2); //First 7-seg is starting on pin 2.
-	drawBitmask(digitToBitmask(secondDigit), 22); //Etc.
-	drawBitmask(digitToBitmask(thirdDigit), 29);
-	drawBitmask(digitToBitmask(fourthDigit), 36);
+	drawBitmask(digitToBitmask(firstDigit), 22); //First 7-seg is starting on pin 2.
+	drawBitmask(digitToBitmask(secondDigit), 30); //Etc.
+	drawBitmask(digitToBitmask(thirdDigit), 38);
+	drawBitmask(digitToBitmask(fourthDigit), 45);
 }
 
 //Converts a digit (0-9) to a bitmask.
@@ -108,8 +108,8 @@ void drawBitmask(const uint8_t bitmask, const uint8_t startPin)
 
 		if ((bitshift & bitmask) == bitshift)
 		{
-			if (i + startPin > 49)
-				digitalWrite((i + startPin) - 50 + 2, LOW);
+			if (i + startPin > 44)
+				digitalWrite((i + startPin) - 45  + 2, LOW);
 			else
 				digitalWrite(i + startPin, LOW);
 		}
@@ -131,14 +131,14 @@ void setup()
 	}
 
 	//Setup pinmodes for the 7-seg displays.
-	for (uint8_t i = 2; i < 5; i++)
+	for (uint8_t i = 2; i < 9; i++)
 	{
 		pinMode(i, OUTPUT);
 
 		digitalWrite(i, HIGH);
 	}
 
-	for (uint8_t i = 22; i < 50; i++)
+	for (uint8_t i = 22; i < BUTTON_MIN; i++)
 	{
 		pinMode(i, OUTPUT);
 
@@ -149,26 +149,23 @@ void setup()
 
 void loop() {
 
-	while (true)
+	while (false)
 	{
-		for (uint8_t i = 0; i < 10; i++)
+		for (uint16_t i = 0; i < 9999; i++)
 		{
 			for (uint8_t j = 22; j < 50; j++)
 			{
 				digitalWrite(j, HIGH);
 			}
 
-			for (uint8_t j = 2; j < 5; j++)
+			for (uint8_t j = 2; j < 9; j++)
 			{
 				digitalWrite(j, HIGH);
 			}
 
-			drawBitmask(digitToBitmask(i), 22);
-			drawBitmask(digitToBitmask(i), 30);
-			drawBitmask(digitToBitmask(i), 38);
-			drawBitmask(digitToBitmask(i), 44);
+			drawNumber(i);
 
-			delay(1000);
+			delay(10);
 		}
 		
 	}
