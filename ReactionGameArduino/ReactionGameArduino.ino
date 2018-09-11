@@ -68,10 +68,10 @@ void drawNumber(const uint16_t number)
 	}
 
 	//Split the number into digits.
-	const auto firstDigit = number / 1000 % 10;
-	const auto secondDigit = number / 100 % 10;
-	const auto thirdDigit = number / 10 % 10;
-	const auto fourthDigit = number % 10;
+	const uint16_t firstDigit = number / 1000 % 10;
+	const uint16_t secondDigit = number / 100 % 10;
+	const uint16_t thirdDigit = number / 10 % 10;
+	const uint16_t fourthDigit = number % 10;
 
 	drawBitmap(digitToBitmap(firstDigit), 22); //First 7-seg is starting on pin 2.
 	drawBitmap(digitToBitmap(secondDigit), 30); //Etc.
@@ -177,7 +177,7 @@ void loop() {
 
 					unsigned long timeTaken = after - before; //Calculate the difference.
 
-					//If timetaken is over 9999 just print 9999.
+					//If timetaken is over 9999, print 9999 to prevent displaying a wrong value.
 					if (timeTaken > 9999)
 						timeTaken = 9999;
 
