@@ -12,7 +12,7 @@
 #define LED_MIN 9
 #define LED_MAX 11
 
-
+//Bitmap definitions. Used to draw numbers / letters
 constexpr uint8_t None = B00000000;
 constexpr uint8_t Zero = B01111110;
 constexpr uint8_t One = B00010010;
@@ -33,7 +33,7 @@ constexpr uint8_t F = B11101000;
 constexpr uint8_t I = B01001000;
 constexpr uint8_t L = B01001100;
 
-
+//Draws the fail message when the user pressed the wrong button.
 void drawFail()
 {
 	//Reset displays
@@ -47,10 +47,10 @@ void drawFail()
 		digitalWrite(i, HIGH);
 	}
 
-	drawBitmask(F, 22); //First 7-seg is starting on pin 2.
-	drawBitmask(A, 30); //Etc.
-	drawBitmask(I, 38);
-	drawBitmask(L, 45);
+	drawBitmap(F, 22); //First 7-seg is starting on pin 2.
+	drawBitmap(A, 30); //Etc.
+	drawBitmap(I, 38);
+	drawBitmap(L, 45);
 }
 
 //Draws a number (0-9999).
@@ -73,14 +73,14 @@ void drawNumber(const uint16_t number)
 	const auto thirdDigit = number / 10 % 10;
 	const auto fourthDigit = number % 10;
 
-	drawBitmask(digitToBitmask(firstDigit), 22); //First 7-seg is starting on pin 2.
-	drawBitmask(digitToBitmask(secondDigit), 30); //Etc.
-	drawBitmask(digitToBitmask(thirdDigit), 38);
-	drawBitmask(digitToBitmask(fourthDigit), 45);
+	drawBitmap(digitToBitmap(firstDigit), 22); //First 7-seg is starting on pin 2.
+	drawBitmap(digitToBitmap(secondDigit), 30); //Etc.
+	drawBitmap(digitToBitmap(thirdDigit), 38);
+	drawBitmap(digitToBitmap(fourthDigit), 45);
 }
 
 //Converts a digit (0-9) to a bitmask.
-uint8_t digitToBitmask(const uint8_t number)
+uint8_t digitToBitmap(const uint8_t number)
 {
 	switch (number)
 	{
@@ -99,14 +99,14 @@ uint8_t digitToBitmask(const uint8_t number)
 }
 
 //Draws a bitmask
-void drawBitmask(const uint8_t bitmask, const uint8_t startPin)
+void drawBitmap(const uint8_t bitmap, const uint8_t startPin)
 {
 	//Go through all the bits and check if they are set in bitmask
 	for (uint8_t i = 0; i < 7; i++)
 	{
 		const uint8_t bitshift = B10000000 >> i; 
 
-		if ((bitshift & bitmask) == bitshift)
+		if ((bitshift & bitmap) == bitshift)
 		{
 			if (i + startPin > 44)
 				digitalWrite((i + startPin) - 45  + 2, LOW);
@@ -116,6 +116,7 @@ void drawBitmask(const uint8_t bitmask, const uint8_t startPin)
 	}
 }
 
+//Runs once at startup
 void setup()
 {
 	//Set up pinmode for the buttons.
@@ -147,29 +148,8 @@ void setup()
 
 }
 
+//Runs forever
 void loop() {
-
-	while (false)
-	{
-		for (uint16_t i = 0; i < 9999; i++)
-		{
-			for (uint8_t j = 22; j < 50; j++)
-			{
-				digitalWrite(j, HIGH);
-			}
-
-			for (uint8_t j = 2; j < 9; j++)
-			{
-				digitalWrite(j, HIGH);
-			}
-
-			drawNumber(i);
-
-			delay(10);
-		}
-		
-	}
-
 
 	delay(random(TIME_MIN, TIME_MAX));
 	
