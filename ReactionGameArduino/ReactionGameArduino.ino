@@ -37,12 +37,12 @@ constexpr uint8_t L = B01001100;
 void drawFail()
 {
 	//Reset displays
-	for (size_t i = 2; i < 9; i++)
+	for (uint8_t i = 2; i < 9; i++)
 	{
 		digitalWrite(i, HIGH);
 	}
 
-	for (size_t i = 22; i < BUTTON_MIN; i++)
+	for (uint8_t i = 22; i < BUTTON_MIN; i++)
 	{
 		digitalWrite(i, HIGH);
 	}
@@ -57,12 +57,12 @@ void drawFail()
 void drawNumber(const uint16_t number)
 {
 	//Reset displays
-	for (size_t i = 2; i < 9; i++)
+	for (uint8_t i = 2; i < 9; i++)
 	{
 		digitalWrite(i, HIGH);
 	}
 
-	for (size_t i = 22; i < BUTTON_MIN; i++)
+	for (uint8_t i = 22; i < BUTTON_MIN; i++)
 	{
 		digitalWrite(i, HIGH);
 	}
@@ -200,4 +200,3 @@ void loop() {
 	digitalWrite(randomLED, LOW); //Turn off the led.
 
 }
-
